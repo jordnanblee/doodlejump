@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doodle Jump - Das ultimative Sprungspiel</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Spiele Doodle Jump kostenlos online! Das süchtig machende Arcade-Spiel mit endlosem Sprungspaß. Springe so hoch wie möglich und sammle Power-ups. Jetzt spielen!">
+    <meta name="keywords" content="Doodle Jump, Online Spiel, Arcade, Sprungspiel, kostenlos, Browser Game, Mobile Game">
+    <meta name="author" content="Jordnan Blee">
+    <meta property="og:title" content="Doodle Jump - Das ultimative Sprungspiel">
+    <meta property="og:description" content="Spiele das beliebte Doodle Jump kostenlos in deinem Browser. Springe endlos hoch und erreiche neue Rekorde!">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2387CEEB'/%3E%3Cstop offset='100%25' style='stop-color:%234169E1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23bg)'/%3E%3Cellipse cx='50' cy='70' rx='15' ry='8' fill='%23228B22'/%3E%3Cellipse cx='50' cy='65' rx='12' ry='12' fill='%2332CD32'/%3E%3Ccircle cx='45' cy='62' r='2' fill='%23000'/%3E%3Ccircle cx='55' cy='62' r='2' fill='%23000'/%3E%3Cellipse cx='50' cy='68' rx='3' ry='2' fill='%23000'/%3E%3Crect x='20' y='80' width='20' height='4' rx='2' fill='%23654321'/%3E%3Crect x='65' y='50' width='20' height='4' rx='2' fill='%23654321'/%3E%3Crect x='15' y='35' width='20' height='4' rx='2' fill='%23654321'/%3E%3C/svg%3E">
+    <link rel="manifest" href="https://jordnanblee.github.io/manifest.json" />
+<link rel="canonical" href="https://jordnanblee.github.io/doodlejump/">
+    <!-- Favicon -->
+  <link rel="shortcut icon" href="https://jordnanblee.github.io/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2387CEEB'/%3E%3Cstop offset='100%25' style='stop-color:%234169E1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23bg)'/%3E%3Cellipse cx='50' cy='70' rx='15' ry='8' fill='%23228B22'/%3E%3Cellipse cx='50' cy='65' rx='12' ry='12' fill='%2332CD32'/%3E%3Ccircle cx='45' cy='62' r='2' fill='%23000'/%3E%3Ccircle cx='55' cy='62' r='2' fill='%23000'/%3E%3Cellipse cx='50' cy='68' rx='3' ry='2' fill='%23000'/%3E%3Crect x='20' y='80' width='20' height='4' rx='2' fill='%23654321'/%3E%3Crect x='65' y='50' width='20' height='4' rx='2' fill='%23654321'/%3E%3Crect x='15' y='35' width='20' height='4' rx='2' fill='%23654321'/%3E%3C/svg%3E">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: float 6s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0); }
+            10% { transform: translateY(90vh) scale(1); }
+            90% { transform: translateY(10vh) scale(1); }
+            100% { transform: translateY(-10vh) scale(0); }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 2rem 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Game Container */
+        .game-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Ad Block for PC */
+        .ad-block {
+            width: 728px;
+            height: 90px;
+            background: linear-gradient(45deg, #ff9a56, #ff6a95);
+            border-radius: 10px;
+            margin: 2rem auto;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        @media (min-width: 768px) {
+            .ad-block {
+                display: flex;
+            }
+        }
+
+        /* Game Frame */
+        .game-frame {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+        }
+
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .control-btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #45a049, #4CAF50);
+        }
+
+        .control-btn:active {
+            transform: translateY(0);
+        }
+
+        .fullscreen-btn {
+            background: linear-gradient(45deg, #FF6B6B, #FF5252);
+        }
+
+        .fullscreen-btn:hover {
+            background: linear-gradient(45deg, #FF5252, #FF6B6B);
+        }
+
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        /* SEO Content */
+        .content-section {
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .content-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .content-section h3 {
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem 0;
+            color: #fff;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            opacity: 0.95;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .game-frame {
+                padding: 1rem;
+            }
+            
+            iframe {
+                height: 500px;
+            }
+            
+            .content-section {
+                margin: 2rem 1rem;
+                padding: 1.5rem;
+            }
+            
+            .content-section h2 {
+                font-size: 2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            iframe {
+                height: 400px;
+            }
+            
+            .control-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading-spinner {
+            display: none;
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top: 5px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation"></div>
+
+    <!-- Floating Particles -->
+    <div id="particles"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <h1>🎮 Doodle Jump</h1>
+        <p>Das ultimative Sprungabenteuer wartet auf dich! Springe so hoch wie möglich, sammle Power-ups und erreiche neue Rekorde in diesem süchtig machenden Arcade-Klassiker.</p>
+    </header>
+
+    <!-- Ad Block (PC only) -->
+    <div class="ad-block">
+        <span>🎯 Werbung 728x90 - Hier könnte Ihre Werbung stehen!</span>
+    </div>
+
+    <!-- Game Container -->
+    <div class="game-container">
+        <div class="game-frame">
+            <div class="game-controls">
+                <button class="control-btn" onclick="reloadGame()">🔄 Spiel Neuladen</button>
+                <button class="control-btn fullscreen-btn" onclick="toggleFullscreen()">🔍 Vollbild</button>
+            </div>
+            <div class="loading-spinner" id="loadingSpinner"></div>
+            <iframe 
+                id="gameFrame"
+                src="https://especially43.github.io/game/doodle-jump/"
+                title="Doodle Jump Spiel"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+
+    <!-- SEO Content Section -->
+    <section class="content-section">
+        <h2>🚀 Über Doodle Jump</h2>
+        <p>
+            <strong>Doodle Jump</strong> ist eines der beliebtesten und süchtig machendsten Arcade-Spiele aller Zeiten! 
+            In diesem endlosen Sprungabenteuer steuerst du einen niedlichen grünen Charakter, der immer höher und höher springt, 
+            während er verschiedene Plattformen nutzt und dabei Hindernissen ausweicht.
+        </p>
+
+        <h3>🎯 Spielprinzip</h3>
+        <p>
+            Das Ziel ist einfach, aber herausfordernd: Springe so hoch wie möglich! Nutze dein Smartphone oder die Tastatur, 
+            um den Doodle-Charakter zu steuern. Lande auf Plattformen, sammle Power-ups und vermeide Hindernisse wie 
+            schwarze Löcher, UFOs und andere Gefahren, die dich zurück nach unten fallen lassen können.
+        </p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon">🎮</span>
+                <h3>Einfache Steuerung</h3>
+                <p>Intuitive Bewegungssteuerung per Neigung oder Tasten - perfekt für alle Altersgruppen!</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🏆</span>
+                <h3>Endlose Herausforderung</h3>
+                <p>Kein Levelende - springe so hoch wie du kannst und übertreffe deine eigenen Rekorde!</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">⚡</span>
+                <h3>Power-ups</h3>
+                <p>Sammle Jetpacks, Sprungfedern und andere Power-ups für spektakuläre Sprünge!</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🎨</span>
+                <h3>Charming Design</h3>
+                <p>Liebevoll gestaltete Grafiken im charakteristischen Doodle-Stil!</p>
+            </div>
+        </div>
+
+        <h3>🏅 Tipps für Hohe Punktzahlen</h3>
+        <p>
+            <strong>1. Nutze Power-ups:</strong> Jetpacks und Propeller-Hüte katapultieren dich weit nach oben!<br>
+            <strong>2. Vermeide Hindernisse:</strong> Schwarze Löcher und Monster können deinen Aufstieg beenden.<br>
+            <strong>3. Präzise Landungen:</strong> Ziele genau auf die Plattformen - auch die sich bewegenden!<br>
+            <strong>4. Üben macht den Meister:</strong> Je mehr du spielst, desto besser wirst du in der Steuerung.
+        </p>
+
+        <h3>📱 Perfekt für Unterwegs</h3>
+        <p>
+             Kostenlos Online Spielen. Doodle Jump ist das ideale Spiel für zwischendurch! Ob in der U-Bahn, in der Pause oder einfach zum 
+            Entspannen - dieses Spiel bietet schnellen Spielspaß ohne komplizierte Regeln. Die responsive 
+            Steuerung funktioniert perfekt auf allen Geräten, von Smartphones über Tablets bis hin zu Desktop-Computern.
+        </p>
+
+        <h3>🌟 Warum Doodle Jump so beliebt ist</h3>
+        <p>
+            Seit seiner Veröffentlichung hat Doodle Jump Millionen von Spielern weltweit begeistert. Der Grund? 
+            Die perfekte Mischung aus einfachem Gameplay, herausfordernden Elementen und dem unwiderstehlichen 
+            Drang, den eigenen Highscore zu übertreffen. Jedes Spiel ist anders, da die Plattformen zufällig 
+            generiert werden, was für endlose Wiederspielbarkeit sorgt.
+        </p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Doodle Jump - Kostenlos Online Spielen | Alle Rechte vorbehalten</p>
+        <p>Viel Spaß beim Springen! 🚀</p>
+    </footer>
+
+    <script>
+        // Fullscreen functionality
+        function toggleFullscreen() {
+            const iframe = document.getElementById('gameFrame');
+            const btn = event.target;
+            
+            if (!document.fullscreenElement) {
+                iframe.requestFullscreen().then(() => {
+                    btn.textContent = '🔍 Vollbild Verlassen';
+                }).catch(err => {
+                    console.log('Fullscreen error:', err);
+                });
+            } else {
+                document.exitFullscreen().then(() => {
+                    btn.textContent = '🔍 Vollbild';
+                });
+            }
+        }
+
+        // Listen for fullscreen changes
+        document.addEventListener('fullscreenchange', () => {
+            const btn = document.querySelector('.fullscreen-btn');
+            if (!document.fullscreenElement) {
+                btn.textContent = '🔍 Vollbild';
+            }
+        });
+
+        // Reload game
+        function reloadGame() {
+            const iframe = document.getElementById('gameFrame');
+            const spinner = document.getElementById('loadingSpinner');
+            
+            spinner.style.display = 'block';
+            iframe.style.display = 'none';
+            
+            iframe.src = iframe.src;
+            
+            setTimeout(() => {
+                spinner.style.display = 'none';
+                iframe.style.display = 'block';
+            }, 2000);
+        }
+
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Initialize particles on load
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+        });
+
+        // Loading indicator for iframe
+        const iframe = document.getElementById('gameFrame');
+        const spinner = document.getElementById('loadingSpinner');
+
+        iframe.addEventListener('load', () => {
+            spinner.style.display = 'none';
+        });
+
+        // Show loading spinner initially
+        spinner.style.display = 'block';
+
+        // Smooth scroll for any internal links
+        document.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && e.target.getAttribute('href').startsWith('#')) {
+                e.preventDefault();
+                const targetId = e.target.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
+    </script>
+  <script>if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/sw.js')
+.then(registration => {console.log('Service Worker registered successfully:', registration);})
+.catch(error => {console.log('Error in Service Worker registration:', error);});});}</script>
+<script src="https://cdn.counter.dev/script.js" data-id="765b5d93-838f-4789-a97e-d18e533d9baf" data-utcoffset="3"></script>
+</body>
+</html>
